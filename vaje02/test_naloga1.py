@@ -27,7 +27,8 @@ def test_naloga1(case_dir, case_id):
 
 
 if __name__ == '__main__':
-    # test_naloga1('./primeri', 4)
+    test_naloga1('./primeri', 5)
+    test_naloga1('./primeri', 4)
     test_naloga1('./primeri', 3)
-    # test_naloga1('./primeri', 2)
-    # test_naloga1('./primeri', 1)
+    test_naloga1('./primeri', 2)
+    test_naloga1('./primeri', 1)

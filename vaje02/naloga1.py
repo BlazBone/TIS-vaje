@@ -1,5 +1,7 @@
 from itertools import count
+import collections
 from math import log2
+
 # from nis import match
 from typing import Counter
 
@@ -8,43 +10,56 @@ def crkeFun(besedilo):
     H = 0
     a = Counter(str(besedilo))
     vse_crke = sorted(a)
-    b = {}
+    # b = {}
     for crka in vse_crke:
-        b[crka] = a[crka]/len(besedilo)
-        H -= b[crka]*log2(b[crka])
+        H -= a[crka]/len(besedilo)*log2(a[crka]/len(besedilo))
     return H
 
 
 def pariFun(besedilo):
     H1 = crkeFun(besedilo=besedilo)
     H2 = 0
-
+    triplets = collections.defaultdict(int)
     posamezno = list(besedilo)
-    pari = list(zip(posamezno[:-1], posamezno[1:]))
-    verjetnost_dvojckov = {}
-    for a, b in set(pari):
-        verjetnost_dvojckov[a+b] = besedilo.count(a+b)/len(pari)
-        H2 -= verjetnost_dvojckov[a+b] * log2(verjetnost_dvojckov[a+b])
+    for a, b in zip(posamezno[::], posamezno[1:]):
+        triplets[a+b] += 1
+    dolzina = sum(triplets.values())
+    for a in triplets.values():
+        H2 += (a/dolzina)*log2(dolzina/a)
+    # print(H2)
     return H2 - H1
 
 
 def trojkeFun(besedilo):
     H1 = crkeFun(besedilo)
     H2 = pariFun(besedilo=besedilo)
-    posamezno = list(besedilo)
+    trojcki = collections.defaultdict(int)
+    for i, j, k in zip(besedilo, besedilo[1:], besedilo[2:]):
+        trojcki[i + j + k] += 1
+
+    st_vseh_trojckov = sum(trojcki.values())
+
     H3 = 0
-    verjetnost_trojk = {}
-    trojke = list(zip(posamezno[:-2], posamezno[1:-1], posamezno[2:]))
-    print(trojke[:11])
-    print(len(trojke))
-    print(len(set(trojke)))
+    for val in trojcki.values():
+        H3 += (val / st_vseh_trojckov) * log2(st_vseh_trojckov / val)
+    # print("H3", H3)
+    # print(H1, H2+H1, H3)
+    return H3 - H2 - H1
 
-    for a, b, c in set(trojke):
-        verjetnost_trojk[a+b+c] = besedilo.count(a+b+c)/len(trojke)
-        H3 -= verjetnost_trojk[a+b+c]*log2(verjetnost_trojk[a+b+c])
 
-    return H3-H2-H1
+# def trojkeFun(besedilo):
+#     H1 = crkeFun(besedilo)
+#     H2 = pariFun(besedilo=besedilo)
+#     posamezno = list(besedilo)
+#     H3 = 0
+#     trojke = list(zip(posamezno[::], posamezno[1:], posamezno[2:]))
 
+#     for a, b, c in set(trojke):
+#         H3 -= (besedilo.count(a+b+c)/len(trojke)) * \
+#             log2(besedilo.count(a+b+c)/len(trojke))
+#     print("h1 h2 h3 ")
+#     print(H1, H2 + H1, H3)
+#     return H3-H2-H1
 
 def naloga1(besedilo, p):
     """ Izracun povprecne nedolocenosti na znak
