@@ -84,7 +84,7 @@ def naloga1(besedilo, p):
         Povprecna informacija na znak abecede z upostevanjem
         stevila poznanih predhodnih znakov 'p'
     """
-    besedilo = "".join(filter(lambda a: a.isalpha(), besedilo)).lower()
+    besedilo = "".join(filter(lambda a: a.isalpha(), besedilo)).upper()
     H = 0
     if p == 0:
         H = crkeFun(besedilo=besedilo)
