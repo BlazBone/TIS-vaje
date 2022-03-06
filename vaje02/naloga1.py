@@ -1,65 +1,37 @@
-from itertools import count
-import collections
 from math import log2
-
-# from nis import match
 from typing import Counter
 
 
 def crkeFun(besedilo):
     H = 0
-    a = Counter(str(besedilo))
-    vse_crke = sorted(a)
-    # b = {}
-    for crka in vse_crke:
-        H -= a[crka]/len(besedilo)*log2(a[crka]/len(besedilo))
+    a = Counter(besedilo)
+    for crka in a.values():
+        H -= crka/len(besedilo)*log2(crka/len(besedilo))
     return H
 
 
 def pariFun(besedilo):
     H1 = crkeFun(besedilo=besedilo)
     H2 = 0
-    triplets = collections.defaultdict(int)
     posamezno = list(besedilo)
-    for a, b in zip(posamezno[::], posamezno[1:]):
-        triplets[a+b] += 1
-    dolzina = sum(triplets.values())
-    for a in triplets.values():
-        H2 += (a/dolzina)*log2(dolzina/a)
-    # print(H2)
+    num_repetitions = Counter(zip(posamezno, posamezno[1:]))
+    stevilo_vseh = sum(num_repetitions.values())
+    for a in num_repetitions.values():
+        H2 += (a/stevilo_vseh)*log2(stevilo_vseh/a)
     return H2 - H1
 
 
 def trojkeFun(besedilo):
     H1 = crkeFun(besedilo)
     H2 = pariFun(besedilo=besedilo)
-    trojcki = collections.defaultdict(int)
-    for i, j, k in zip(besedilo, besedilo[1:], besedilo[2:]):
-        trojcki[i + j + k] += 1
-
-    st_vseh_trojckov = sum(trojcki.values())
-
+    posamezno = list(besedilo)
+    num_repetitions = Counter(zip(posamezno, posamezno[1:], posamezno[2:]))
+    st_vseh_trojckov = sum(num_repetitions.values())
     H3 = 0
-    for val in trojcki.values():
+    for val in num_repetitions.values():
         H3 += (val / st_vseh_trojckov) * log2(st_vseh_trojckov / val)
-    # print("H3", H3)
-    # print(H1, H2+H1, H3)
     return H3 - H2 - H1
 
-
-# def trojkeFun(besedilo):
-#     H1 = crkeFun(besedilo)
-#     H2 = pariFun(besedilo=besedilo)
-#     posamezno = list(besedilo)
-#     H3 = 0
-#     trojke = list(zip(posamezno[::], posamezno[1:], posamezno[2:]))
-
-#     for a, b, c in set(trojke):
-#         H3 -= (besedilo.count(a+b+c)/len(trojke)) * \
-#             log2(besedilo.count(a+b+c)/len(trojke))
-#     print("h1 h2 h3 ")
-#     print(H1, H2 + H1, H3)
-#     return H3-H2-H1
 
 def naloga1(besedilo, p):
     """ Izracun povprecne nedolocenosti na znak
