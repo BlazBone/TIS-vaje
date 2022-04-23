@@ -33,7 +33,6 @@ def test_naloga3(case_dir, case_id):
     success_crc = crc.upper() == data['crc'].upper()
     success = success_izhod*0.5 + success_crc*0.5
 
-    # Izpišemo rezultat
     print("-"*72)
     print(f"Rezultat za primer {case_id}: {success} točk")
     if success_izhod != 1:
@@ -79,6 +78,8 @@ def main(case_dir="primeri", case_id=None, *other):
 
 if __name__ == "__main__":
     # Argumenti ukazne vrstice so v sys.argv
-    main(*sys.argv[1:])
+    # main(*sys.argv[1:])
     # test_naloga3("primeri", 1)
-    # test_naloga3("primeri", 2)
+    # test_naloga3("primeri", 3)
+    for i in range(1, 17):
+        test_naloga3("primeriSkriti", i)
