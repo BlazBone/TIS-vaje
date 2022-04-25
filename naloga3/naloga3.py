@@ -4,6 +4,39 @@ from math import log2
 def toInt(x: list):
     return int(''.join([str(x1 % 2) for x1 in x]), 2)
 
+def toHex(vhod: list):
+    num1 = 0
+    num2 = 0
+    crke = ['A', 'B', 'C', 'D', 'E', 'F']
+    for index, bit in enumerate(vhod):
+        if index < 4:
+            num2 += bit * (2 ** index)
+        else: 
+            num1 += bit * (2 ** (index - 4))
+    if num1 >= 10:
+        num1 = crke[num1 - 10]
+    
+    if num2 >= 10:
+        num2 = crke[num2 - 10]
+    return str(num1) + str(num2)
+
+def crc8(vhod: list):
+    crc = 0
+    register = [1 for x in range(8)]
+    genpol = [0,1,0,1,1,0,0,1]
+    for x in vhod:
+        xor = x ^ register[7]
+        if xor :
+            register.insert(0, 1)
+            register.pop()
+            for i in range(8):
+                register[i]=register[i]^genpol[i]                
+        else:
+            register.insert(0, 0)
+            register.pop()
+    
+    return register
+
 def naloga3(vhod: list, n: int):
     m = int(log2(n+1))
     k = n - m
@@ -12,20 +45,18 @@ def naloga3(vhod: list, n: int):
     vhodx = n
     vhody = len(vhod)//n
     inp = vhod.reshape(vhody, vhodx)
-    CRC = np.array([1 for x in range(8)])
-    stPolnih = len(vhod)//8
+    
+    
     vhodZaCrc = vhod[::]
-    i = 0
-    while(i<stPolnih):
-        CRC = np.array([toInt(x) for x in CRC])
-        CRC = np.array([x ^ y for x, y in zip(CRC, inp[i])])
-        i += 1
+    crclist = crc8(vhodZaCrc)
+    crc = toHex(crclist)
 
 
-        
     stolpci = np.array(
         [x for x in range(n+1) if (x & (x - 1)) != 0])
+
     identitea = np.array([x for x in range(1, n+1) if (x & (x - 1)) == 0])
+
     stevilaPoVrsti = np.concatenate([stolpci, identitea])
 
     Ht = [[int(st) for st in get_bin(x, m)[::-1]] for x in stevilaPoVrsti]
@@ -47,7 +78,4 @@ def naloga3(vhod: list, n: int):
                 izhod.extend(cas)
                 break
 
-    crc = ''
-    print("dolzina izhoda:, ", len(izhod))
-   
     return (izhod, crc)

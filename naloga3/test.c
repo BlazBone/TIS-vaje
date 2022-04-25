@@ -24,6 +24,10 @@ unsigned char crc8(unsigned char *message) {
     return ~crc;
 }
 
+int crc8(char* msg, int lenBits){
+    
+}
+
 
 
 int main(int argc, char const *argv[])
