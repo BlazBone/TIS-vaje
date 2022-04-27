@@ -65,8 +65,8 @@ def naloga3(vhod: list, n: int):
     izhod = []
     
     for index, sindrom in enumerate(out):
-        # mesto = toInt(sindrom[::-1]) # deljajo vsi razn 3 test
-        mesto = toInt(sindrom) # deljajo pou testu
+        mesto = toInt(sindrom[::-1]) # deljajo vsi razn 3 test
+        # mesto = toInt(sindrom) # deljajo pou testu
         if mesto == 0:
             cas = np.array(inp[index, 0:k])
             izhod.extend(cas)
