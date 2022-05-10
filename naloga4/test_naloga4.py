@@ -75,5 +75,7 @@ def main(case_dir="primeri", case_id=None, *other):
 
 if __name__ == "__main__":
     # Argumenti ukazne vrstice so v sys.argv
-    # main(*sys.argv[1:])
-    test_naloga4('primeri', 1)
+    main(*sys.argv[1:])
+    # test_naloga4('primeri', 1)
+    # test_naloga4('primeri', 2)
+    # test_naloga4('primeri', 3)

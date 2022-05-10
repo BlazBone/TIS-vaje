@@ -41,7 +41,7 @@ def naloga4(vhod,fs):
     # axis[0].plot(t,x, color='blue')
     # axis[0].set_title("jakost v odvisnosti od casa")
     # axis[0].set_xlabel("t[s]")
-    print(P)
+    # print(P)
     axis.plot(f,P, color='red')
     axis.set_title("moc v  odvisnosti od frekvence")
     axis.set_xlabel("f[Hz]")
@@ -53,23 +53,57 @@ def naloga4(vhod,fs):
             break
             
         if size > 200:
-            print(index,size)
+            # print(index,size)
             freq = index * (fs/N)
-            # freqTonov.append(index * (fs/N))
-            # if len(freqTonov) >= 1:     
-            #     if freqTonov[-1]-freq < 1:
-            #         freq = (freqTonov[-1] + freq) / 2
-            #         freqTonov.remove(freqTonov[-1])
+
             freqTonov.append(freq) 
-                
-    for freq in freqTonov:
+    
+    end_tones = []
+    for frq in freqTonov:
+        found = False
+        for key,value in tones.items():
+            if abs(frq-value) < 1:
+                found = True
+                end_tones.append(key)
         
-    print(freqTonov)
+        # if not found:
+        #     return "";
+    print(end_tones)
+    end_tones = list(dict.fromkeys(end_tones))
+                
+    print(end_tones)
+    together = ""
+    if len(end_tones) <= 3:
+        for tone in end_tones:
+            together += tone
+    elif len(end_tones) == 6:
+        togetherNizji = ""
+        togehter1 = ""
+        togehter2 = ""
+        for tone in end_tones:
+            if tone[len(tone)-1] == '1':
+                togetherNizji += tone
+                togehter1+=tone[:len(tone)-1]
+            elif tone[len(tone)-1] == '2':
+                togehter2+=tone[:len(tone)-1]
+        if togetherNizji in accords.values() and togehter1 == togehter2:
+            together = togetherNizji
+    
+            
+    print(together)
+    izhod = ''
+    for acc,tons in accords.items():
+        if tons == together:
+            izhod = acc
+     
+          
+    
+    
         #MATPLOTLIB NI GOR PAZI ZA ODDAJANJE
     # for index,size in enumerate(f):
     #     if size > 2000:
     #         print(index, size)
             
     
-    izhod = ''
+    # izhod = ''
     return izhod
