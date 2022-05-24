@@ -1,0 +1,1 @@
+Decoding messeges using Hamming code and calculating CRC.

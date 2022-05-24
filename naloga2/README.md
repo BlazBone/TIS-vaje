@@ -1,0 +1,1 @@
+Program that can code and decode input using LZW algorithem, it also calculates the compression ratio.
